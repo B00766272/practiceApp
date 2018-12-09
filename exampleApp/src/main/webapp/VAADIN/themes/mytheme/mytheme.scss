@@ -28,11 +28,39 @@
 
 // For more information, see: https://vaadin.com/book/-/page/themes.valo.html
 // Example variants can be copy/pasted from https://vaadin.com/wiki/-/wiki/Main/Valo+Examples
-
 @import "../valo/valo.scss";
 
 @mixin mytheme {
   @include valo;
 
-  // Insert your own theme rules here
+ /* White background for the entire UI */
+ .v-ui {
+  background: rgb(121, 156, 253);
+}
+
+/* All labels have white text on black background */
+.v-label {
+  background: lightcoral;
+  color: black;
+  font-size: 24pt;
+  line-height: 24pt;
+  padding: 5px;
+}
+
+/* All buttons have blue caption and some margin */
+.v-button {
+  margin: 10px;
+
+  /* A nested selector to increase specificity */
+  .v-button-caption {
+    color: blue;
+  }
+}
+
+
+.v-grid .v-grid-header th.v-grid-cell {
+  background:#5A9CC5;
+  color: white;
+}
+
 }

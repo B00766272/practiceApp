@@ -15075,3 +15075,28 @@ div.v-layout.v-horizontal.v-widget {
 	width: 19px;
 	overflow: hidden;
 }
+
+.mytheme .v-ui {
+	background: #799cfd;
+}
+
+.mytheme .v-label {
+	background: lightcoral;
+	color: black;
+	font-size: 24pt;
+	line-height: 24pt;
+	padding: 5px;
+}
+
+.mytheme .v-button {
+	margin: 10px;
+}
+
+.mytheme .v-button .v-button-caption {
+	color: blue;
+}
+
+.mytheme .v-grid .v-grid-header th.v-grid-cell {
+	background: #5A9CC5;
+	color: white;
+}
