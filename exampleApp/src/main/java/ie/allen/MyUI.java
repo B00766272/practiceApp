@@ -4,6 +4,8 @@ import javax.servlet.annotation.WebServlet;
 import java.sql.*;
 import java.util.*;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Grid.SelectionMode;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.server.VaadinRequest;
@@ -33,9 +35,34 @@ public class MyUI extends UI {
 			  "loginTimeout=30;";
 
 
+        final HorizontalLayout layout = new HorizontalLayout();
+        layout.setMargin(true);
+        HorizontalLayout cell1 = new HorizontalLayout();
+        HorizontalLayout cell2 = new HorizontalLayout();
+        HorizontalLayout gridlayout = new HorizontalLayout();
+        VerticalLayout v = new VerticalLayout();
+        //content of Cell1
+        Label logo = new Label("<H1>Marty Party Planners</H1> <p/> <h3>Please enter the details below and click Book</h3>", ContentMode.HTML);
+        
+        //content of cell2
+        final TextField nameOfParty = new TextField();
+        nameOfParty.setCaption("Name of Party");
+
+        Slider s = new Slider("Value", 1, 250);
+        s.setValue(200.0);
+        s.setWidth(s.getMax()+"px");
+   
+        
+        ComboBox<String> children = new ComboBox<String>("Children Attending?");
+        children.setItems("yes", "no");
+
+        //vertical layout content
+
+        Button bookButton = new Button("Book");
 
 
-        final VerticalLayout layout = new VerticalLayout();
+
+
 
         try 
         {
@@ -66,22 +93,34 @@ public class MyUI extends UI {
              myGrid.addColumn(PartyRooms::getRooms).setCaption("Rooms");
              myGrid.addColumn(PartyRooms::getCapacity).setCaption("Capacity");
              myGrid.addColumn(PartyRooms::getFeature).setCaption("Feature");
-            myGrid.addColumn(PartyRooms::getAlcoholAllowed).setCaption("Alcohol_Allowed");
+             myGrid.addColumn(PartyRooms::getAlcoholAllowed).setCaption("Alcohol_Allowed");
+             myGrid.setSelectionMode(SelectionMode.MULTI);
+            
 
             // Add the grid to the list
-            layout.addComponent(myGrid);
+            gridlayout.addComponent(myGrid);
         
        }
        catch (Exception e) 
        {
         // This will show an error message if something went wrong
-        layout.addComponent(new Label(e.getMessage()));
+        gridlayout.addComponent(new Label(e.getMessage()));
        }
+
+     
+        cell1.addComponent(logo);
+        cell2.addComponents( nameOfParty,s,children);
+       
+        v.addComponents( cell1,cell2,bookButton, gridlayout);
+        layout.addComponent(v);
+       
+
+        
         setContent(layout);
     
     
     
-        }
+    }
     
         @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
         @VaadinServletConfiguration(ui = MyUI.class, productionMode = false)
