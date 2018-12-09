@@ -38,7 +38,7 @@ public class MyUI extends UI {
         final VerticalLayout layout = new VerticalLayout();//masterLayout
         HorizontalLayout cell1 = new HorizontalLayout();
         HorizontalLayout cell2 = new HorizontalLayout();
-               HorizontalLayout gridlayout = new HorizontalLayout();
+        HorizontalLayout gridlayout = new HorizontalLayout();
         gridlayout.setDefaultComponentAlignment(Alignment.MIDDLE_RIGHT);
         gridlayout.setSizeFull();
         VerticalLayout v = new VerticalLayout();
@@ -101,10 +101,8 @@ public class MyUI extends UI {
              myGrid.addColumn(PartyRooms::getAlcoholAllowed).setCaption("Alcohol Allowed");
              myGrid.setSelectionMode(SelectionMode.MULTI);
             
-            
-
-            // Add the grid to the list
-            gridlayout.addComponent(myGrid);
+                        // Add the grid to the list
+            gridlayout.addComponent(myGrid);//horizontal grid layout
 
 
 
@@ -118,18 +116,11 @@ public class MyUI extends UI {
 
 
         
-
-
-     
         cell1.addComponent(logo);
         cell2.addComponents( nameOfParty,s,children);
-      
         v1.addComponent(message );
         v.addComponents( cell1,cell2,bookButton,v1);
-        layout.addComponents(v,gridlayout);
-       
-
-        
+        layout.addComponents(v,gridlayout);  //masterlayout
         setContent(layout);
     
     
