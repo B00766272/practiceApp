@@ -15083,13 +15083,13 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .v-label {
 	background: #799cfd;
 	color: black;
-	font-size: 24pt;
-	line-height: 24pt;
-	padding: 5px;
+	font-size: 14pt;
+	line-height: 2pt;
+	padding: 2px;
 }
 
 .mytheme .v-button {
-	margin: 10px;
+	margin: 20px;
 }
 
 .mytheme .v-button .v-button-caption {

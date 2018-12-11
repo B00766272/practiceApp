@@ -42,14 +42,14 @@
 .v-label {
   background: rgb(121, 156, 253);
   color: black;
-  font-size: 24pt;
-  line-height: 24pt;
-  padding: 5px;
+  font-size: 14pt;
+  line-height: 2pt;
+  padding: 2px;
 }
 
 /* All buttons have blue caption and some margin */
 .v-button {
-  margin: 10px;
+  margin: 20px;
 
   /* A nested selector to increase specificity */
   .v-button-caption {

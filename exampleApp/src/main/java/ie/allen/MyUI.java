@@ -8,6 +8,7 @@ import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.event.selection.SingleSelectionListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 
@@ -32,41 +33,46 @@ public class MyUI extends UI {
 			  "encrypt=true;" + 
 			  "trustServerCertificate=false;" + 
 			  "hostNameInCertificate=*.database.windows.net;" +
-			  "loginTimeout=30;";
+              "loginTimeout=30;";
+        //content of Cell1          
+         Label logo = new Label("<H1>Marty Party Planners</H1> <p/> <h3>Please enter the details below and click Book</h3>", ContentMode.HTML);
+         
+
+         final VerticalLayout layout = new VerticalLayout();//masterLayout
+         HorizontalLayout cell1 = new HorizontalLayout();
+         HorizontalLayout cell2 = new HorizontalLayout();
+         HorizontalLayout gridlayout = new HorizontalLayout();
+         gridlayout.setDefaultComponentAlignment(Alignment.MIDDLE_RIGHT);
+         gridlayout.setSizeFull();
+         VerticalLayout v = new VerticalLayout();
+         VerticalLayout v1= new VerticalLayout();
 
 
-        final VerticalLayout layout = new VerticalLayout();//masterLayout
-        HorizontalLayout cell1 = new HorizontalLayout();
-        HorizontalLayout cell2 = new HorizontalLayout();
-        HorizontalLayout gridlayout = new HorizontalLayout();
-        gridlayout.setDefaultComponentAlignment(Alignment.MIDDLE_RIGHT);
-        gridlayout.setSizeFull();
-        VerticalLayout v = new VerticalLayout();
-        VerticalLayout v1= new VerticalLayout();
+
+         //content of cell2
+             final TextField nameOfParty = new TextField();
+             nameOfParty.setCaption("Name of Party");
     
-        //content of Cell1
-        Label logo = new Label("<H1>Marty Party Planners</H1> <p/> <h3>Please enter the details below and click Book</h3>", ContentMode.HTML);
-        
-       //content of cell2
-       final TextField nameOfParty = new TextField();
-       nameOfParty.setCaption("Name of Party");
-
-       Slider s = new Slider("Value", 1, 250);
-       s.setValue(200.0);
-       s.setWidth(s.getMax()+"px");
-
-   
-
-       ComboBox<String> children = new ComboBox<String>("Children Attending?");
-       children.setItems("yes", "no");
-
-       //vertical layout content
-
-       Button bookButton = new Button("Book");
-       Label message = new Label("<h3>Your party is not booked yet</h3>", ContentMode.HTML);
+             Slider s = new Slider("How many people are attending to this party?", 1, 300);
+             s.setValue(300.0);
+             s.setWidth(s.getMax()+"px");
     
-
+       
     
+           ComboBox<String> children = new ComboBox<String>("Children Attending?");
+           children.setItems("yes", "no");
+    
+           //vertical layout content
+    
+           Button bookButton = new Button("Book");
+
+           Label message = new Label("Your party is not booked yet", ContentMode.HTML);
+    
+           
+
+            
+
+
 
         try 
         {
@@ -77,7 +83,7 @@ public class MyUI extends UI {
          //layout.addComponent(new Label("Connected to database: " + connection.getCatalog()));
         //query below - as loop:
         ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM PartyRooms;");
-        // Convert the resultset that comes back into a List - we need a Java class to represent the data (Customer.java in this case)
+        // Convert the resultset that comes back into a List - we need a Java class to represent the data 
         List<PartyRooms> rooms = new ArrayList<PartyRooms>();
         // While there are more records in the resultset
         while(rs.next())
@@ -101,9 +107,44 @@ public class MyUI extends UI {
              myGrid.addColumn(PartyRooms::getAlcoholAllowed).setCaption("Alcohol Allowed");
              myGrid.setSelectionMode(SelectionMode.MULTI);
             
-                        // Add the grid to the list
-            gridlayout.addComponent(myGrid);//horizontal grid layout
+             // Add the grid to the layout
+             gridlayout.addComponent(myGrid);//horizontal grid layout 
+             
+             
 
+             bookButton.addClickListener(e -> {
+
+                if(myGrid.getSelectedItems().size() == 0){
+                    message.setValue("<strong>Please select at least one room!</strong>");
+                    return;
+                }
+        
+                   if (nameOfParty.getValue().length()==0){
+                       message.setValue("<strong>Please enter party name.</strong>");
+                    return;
+             
+                       }
+                       if(!children.getSelectedItem().isPresent()){
+                        message.setValue("<strong>Please confirm if children attending your party</strong>");
+                        return;   
+                       }
+
+                   // if(children.getSelectedItem(yes") || (myGrid.getSelectedItems().size()==1 )){
+
+                   // }
+
+                       //If they specify children are attending but have selected a room with alcohol
+                     //<strong>You cannot select any rooms serving alcohol if children are attending.</strong>
+
+
+
+
+
+                    
+                        }); 
+        
+
+            
 
 
         
@@ -111,17 +152,21 @@ public class MyUI extends UI {
        catch (Exception e) 
        {
         // This will show an error message if something went wrong
-        gridlayout.addComponent(new Label(e.getMessage()));
+       gridlayout.addComponent(new Label(e.getMessage()));
        }
 
 
+       cell1.addComponent(logo);
+       cell2.addComponents( nameOfParty,s,children);
+       v1.addComponent(message);    
+       v.addComponents( cell1,cell2,bookButton,v1);
+       layout.addComponents(v,gridlayout);  //masterlayout
+
+
+
+       setContent(layout);
+
         
-        cell1.addComponent(logo);
-        cell2.addComponents( nameOfParty,s,children);
-        v1.addComponent(message );
-        v.addComponents( cell1,cell2,bookButton,v1);
-        layout.addComponents(v,gridlayout);  //masterlayout
-        setContent(layout);
     
     
     
