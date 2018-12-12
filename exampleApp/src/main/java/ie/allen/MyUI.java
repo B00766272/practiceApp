@@ -68,6 +68,7 @@ public class MyUI extends UI {
            Button bookButton = new Button("Book");
 
            Label message = new Label("Your party is not booked yet", ContentMode.HTML);
+           Label footer = new Label ("B00766272");
 
 
         try 
@@ -116,7 +117,7 @@ public class MyUI extends UI {
              
              
 
-             bookButton.addClickListener(e -> {
+            bookButton.addClickListener(e -> {
 
             String compare = select.getValue().stream().map(PartyRooms::getAlcoholAllowed).collect(Collectors.joining(","));
             double cap = select.getValue().stream().mapToDouble(PartyRooms::getCapacity).sum();
@@ -154,27 +155,14 @@ public class MyUI extends UI {
                         message.setValue("<strong>Success! The party is booked now</strong>");
                     }
 
-                   
 
-
-                  s.addValueChangeListener(event -> {
-                  int value = event.getValue().intValue();
-                  message.setValue(String.valueOf(value));
-                    });
-        
-
-
-
-
-
-
-                    
+                s.addValueChangeListener(event -> {
+                int value = event.getValue().intValue();
+                message.setValue(String.valueOf(value));
+                });
+                  
                         }); 
         
-
-            
-
-
         
        }
        catch (Exception e) 
@@ -188,7 +176,7 @@ public class MyUI extends UI {
        cell2.addComponents( nameOfParty,s,children);
        v1.addComponent(message);    
        v.addComponents( cell1,cell2,bookButton,v1);
-       layout.addComponents(v,gridlayout);  //masterlayout
+       layout.addComponents(v,gridlayout,footer);  //masterlayout
 
 
 
