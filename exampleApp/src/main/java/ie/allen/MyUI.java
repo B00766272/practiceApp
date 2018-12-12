@@ -182,9 +182,7 @@ public class MyUI extends UI {
 
        setContent(layout);
 
-        
-    
-    
+       
     
     }
     
