@@ -3,6 +3,8 @@ package ie.allen;
 import javax.servlet.annotation.WebServlet;
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
+
 import com.vaadin.ui.*;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.shared.ui.ContentMode;
@@ -42,7 +44,6 @@ public class MyUI extends UI {
          HorizontalLayout cell1 = new HorizontalLayout();
          HorizontalLayout cell2 = new HorizontalLayout();
          HorizontalLayout gridlayout = new HorizontalLayout();
-         gridlayout.setDefaultComponentAlignment(Alignment.MIDDLE_RIGHT);
          gridlayout.setSizeFull();
          VerticalLayout v = new VerticalLayout();
          VerticalLayout v1= new VerticalLayout();
@@ -52,12 +53,12 @@ public class MyUI extends UI {
          //content of cell2
              final TextField nameOfParty = new TextField();
              nameOfParty.setCaption("Name of Party");
+          
     
              Slider s = new Slider("How many people are attending to this party?", 1, 300);
              s.setValue(300.0);
-             s.setWidth(s.getMax()+"px");
-    
-       
+             s.setWidth("500px");
+             
     
            ComboBox<String> children = new ComboBox<String>("Children Attending?");
            children.setItems("yes", "no");
@@ -67,11 +68,6 @@ public class MyUI extends UI {
            Button bookButton = new Button("Book");
 
            Label message = new Label("Your party is not booked yet", ContentMode.HTML);
-    
-           
-
-            
-
 
 
         try 
@@ -109,10 +105,23 @@ public class MyUI extends UI {
             
              // Add the grid to the layout
              gridlayout.addComponent(myGrid);//horizontal grid layout 
+
+             MultiSelect<PartyRooms> select = myGrid.asMultiSelect();
+             myGrid.addSelectionListener(event -> {
+
+             Notification.show(select.getValue().stream().map(PartyRooms::getRooms).collect(Collectors.joining(","))
+                    + " were selected");
+
+        });
              
              
 
              bookButton.addClickListener(e -> {
+
+            String compare = select.getValue().stream().map(PartyRooms::getAlcoholAllowed).collect(Collectors.joining(","));
+            double cap = select.getValue().stream().mapToDouble(PartyRooms::getCapacity).sum();
+            message.setValue(String.valueOf(cap));
+            String match = "true";
 
                 if(myGrid.getSelectedItems().size() == 0){
                     message.setValue("<strong>Please select at least one room!</strong>");
@@ -128,13 +137,32 @@ public class MyUI extends UI {
                         message.setValue("<strong>Please confirm if children attending your party</strong>");
                         return;   
                        }
+                         //If they specify children are attending but have selected a room with alcohol
+                       if ((children.getValue() == "Yes") && (compare.equalsIgnoreCase(match))) {
+                        message.setValue(
+                                "<strong>You cannot select any rooms serving alcohol if children are attending.</strong>");
+                       }
 
-                   // if(children.getSelectedItem(yes") || (myGrid.getSelectedItems().size()==1 )){
 
-                   // }
+                       if (s.getValue().intValue() > cap) {
+                        message.setValue("<strong>You have selected rooms with a max capacity of " + cap
+                                + " which is not enough to hold </strong>" + s.getValue().intValue());
 
-                       //If they specify children are attending but have selected a room with alcohol
-                     //<strong>You cannot select any rooms serving alcohol if children are attending.</strong>
+                       }
+
+                     else {
+                        message.setValue("<strong>Success! The party is booked now</strong>");
+                    }
+
+                   
+
+
+                  s.addValueChangeListener(event -> {
+                  int value = event.getValue().intValue();
+                  message.setValue(String.valueOf(value));
+                    });
+        
+
 
 
 
