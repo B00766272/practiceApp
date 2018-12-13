@@ -8,6 +8,8 @@ copy D:\home\site\repository\exampleApp\target\*.war %DEPLOYMENT_TARGET%\webapps
 
 rename  D:\home\site\wwwroot\webapps\*.war ROOT.WAR
 
+rename  D:\home\site\repository\exampleApp\target\*.war ROOT.WAR
+
 
 
 
