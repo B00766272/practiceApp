@@ -68,7 +68,7 @@ public class MyUI extends UI {
            Button bookButton = new Button("Book");
 
            Label message = new Label("Your party is not booked yet", ContentMode.HTML);
-           Label footer = new Label ("ALLEN");
+           Label footer = new Label ("B00766272");
 
 
         try 
