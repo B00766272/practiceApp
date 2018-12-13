@@ -27,7 +27,7 @@ public class MyUI extends UI {
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         Connection connection = null;
-    
+        //copy this details from azure database and paste it here, make sure to use the correct password
         String connectionString = "jdbc:sqlserver://myclassdb.database.windows.net:1433;" + 
 			  "database={myclassdb};" + 
 			  "user=allen@myclassdb;" + 
